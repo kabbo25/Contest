@@ -60,7 +60,8 @@ void solve()
         mp[x]++;
     }
     vector res(0, 0), bad(0, 0);
-    int curse(0), prefix_sum(0);
+    int curse(0);
+    int64_t prefix_sum(0);
     for (auto &[a, b] : mp)
     {
         if (prefix_sum < a)
@@ -79,15 +80,9 @@ void solve()
         for (int i(0); i < b; ++i)
             bad.emplace_back(a);
     }
+    curse = n - res.size();
     for (auto &x : bad)
         res.emplace_back(x);
-    prefix_sum = 0;
-    assert((int)res.size() == n);
-    for (int i(0); i < n; ++i)
-    {
-        curse += prefix_sum >= res[i];
-        prefix_sum += res[i];
-    }
     cout << curse << endl;
     for (int i : res)
         cout << i << " ";
