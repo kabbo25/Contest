@@ -59,25 +59,36 @@ void solve()
         cin >> x;
         mp[x]++;
     }
-    vector res(0, 0);
+    vector res(0, 0), bad(0, 0);
+    int curse(0), prefix_sum(0);
     for (auto &[a, b] : mp)
     {
-        res.emplace_back(a);
+        if (prefix_sum < a)
+        {
+            res.emplace_back(a);
+            prefix_sum += a;
+        }
+        else
+        {
+            bad.emplace_back(a);
+        }
         b--;
     }
     for (auto [a, b] : mp)
     {
         for (int i(0); i < b; ++i)
-            res.emplace_back(a);
+            bad.emplace_back(a);
     }
-    int ans(0), sum(0);
+    for (auto &x : bad)
+        res.emplace_back(x);
+    prefix_sum = 0;
+    assert((int)res.size() == n);
     for (int i(0); i < n; ++i)
     {
-        if (sum >= res[i])
-            ans++;
-        sum += res[i];
+        curse += prefix_sum >= res[i];
+        prefix_sum += res[i];
     }
-    cout << ans << endl;
+    cout << curse << endl;
     for (int i : res)
         cout << i << " ";
     cout << endl;
