@@ -1,0 +1,2 @@
+--- Case #0 start ---
+time = 0.00097 sec

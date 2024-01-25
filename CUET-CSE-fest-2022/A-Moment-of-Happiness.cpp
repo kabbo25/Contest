@@ -1,10 +1,10 @@
-// time-limit: 1000
-// problem-url: https://www.codechef.com/START115B/problems/SUBSEQI
 #include <bits/stdc++.h>
 using namespace std;
+
+// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
 template <class Fun> class y_combinator_result {
   Fun fun_;
- 
+
 public:
   template <class T>
   explicit y_combinator_result(T &&fun) : fun_(std::forward<T>(fun)) {}
@@ -15,7 +15,7 @@ public:
 template <class Fun> decltype(auto) y_combinator(Fun &&fun) {
   return y_combinator_result<std::decay_t<Fun>>(std::forward<Fun>(fun));
 }
- 
+
 template <typename A, typename B>
 ostream &operator<<(ostream &os, const pair<A, B> &p) {
   return os << '(' << p.first << ", " << p.second << ')';
@@ -30,40 +30,49 @@ ostream &operator<<(ostream &os, const T_container &v) {
     os << sep << x, sep = ", ";
   return os << '}';
 }
- 
+clock_t startTime;
+double getCurrentTime() {
+  return (double)(clock() - startTime) / CLOCKS_PER_SEC;
+}
 void dbg_out() { cerr << endl; }
 template <typename Head, typename... Tail> void dbg_out(Head H, Tail... T) {
   cerr << ' ' << H;
   dbg_out(T...);
 }
-#ifdef NEAL_DEBUG
-#define dbg(...)                                                               \
-  cerr << '[' << __FILE__ << ':' << __LINE__ << "] (" << #__VA_ARGS__ << "):", \
-      dbg_out(__VA_ARGS__)
+#ifndef NEAL_DEBUG
+#define dbg(...) cerr << "(" << #__VA_ARGS__ << "):", dbg_out(__VA_ARGS__)
 #else
 #define dbg(...)
 #endif
-void rec(int pos,string s){
-    if(pos==2){
-        if(s.back()!='d' and s.front()!='d')
-        cout<<s<<endl;
-        return;
+void solve() {
+  int n;
+  cin >> n;
+  string s;
+  cin >> s;
+  s += '$';
+  int operation(0);
+  for (int i(0); i < n; ++i) {
+    if (s[i] == '0') {
+      operation++;
+      s[i] = '1';
+      s[i + 1] = '1';
     }
-    for(int i(0);i<4;++i){
-        auto ch=char('a'+i);
-        if(ch==s.back())continue;
-        rec(pos+1,s+=ch);
-        s.pop_back();
-    }
+  }
+  cout << operation << endl;
 }
-void solve()
-{
-    string s;
-    rec(0,s);
-}
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(nullptr);
+int32_t main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(nullptr);
+  std::ofstream cerr_file("cerr_output.txt");
+  std::cerr.rdbuf(cerr_file.rdbuf());
+  startTime = clock();
+  int t = 1;
+  // cin>>t;
+  for (int i(0); i < t; ++i) {
+    std::cerr << "--- Case #" << i << " start ---\n";
     solve();
+    std::cerr << "time = " << std::fixed << std::setprecision(5)
+              << getCurrentTime() << " sec" << '\n';
+  }
+  return 0;
 }
